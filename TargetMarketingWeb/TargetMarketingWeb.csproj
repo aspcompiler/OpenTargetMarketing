@@ -188,6 +188,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\TargetMarketing.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -245,6 +246,16 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TargetMarketing.Geolocation\TargetMarketing.Geolocation.csproj">
+      <Project>{d715346c-8ff1-455b-ba0e-59cd32f3a3af}</Project>
+      <Name>TargetMarketing.Geolocation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TargetMarketing.Rating\TargetMarketing.Rating.csproj">
+      <Project>{86eb6fc9-5179-42c5-adc7-9aab8766c6b1}</Project>
+      <Name>TargetMarketing.Rating</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
