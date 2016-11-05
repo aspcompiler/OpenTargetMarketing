@@ -10,7 +10,7 @@ namespace TargetMarketingWeb.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Rating");
         }
 
         public ActionResult About()
