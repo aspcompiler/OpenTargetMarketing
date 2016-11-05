@@ -10,9 +10,24 @@ using System.Net;
 
 namespace TargetMarketing.YelpClient
 {
-    public class Class1
+    public class YelpWrapper
     {
-
+        // Search("bars", "ll=41.2033,-77.1945")        
+        public static List<SearchResult> Search(string term, string location)
+        {
+            List<SearchResult> result = new List<SearchResult>();
+            var client = new YelpAPIClient();
+            JObject response = client.Search(term, location);
+            JArray businesses = (JArray)response.GetValue("businesses");
+            foreach(JObject b in businesses)
+            {
+                SearchResult r = new SearchResult();
+                r.latitude = Convert.ToDouble(((JObject)((JObject)b.GetValue("location")).GetValue("coordinate")).GetValue("latitude"));
+                r.longitude = Convert.ToDouble(((JObject)((JObject)b.GetValue("location")).GetValue("coordinate")).GetValue("longitude"));
+                result.Add(r);
+            }
+            return result;
+        }
     }
 
     class YelpAPIClient
@@ -23,7 +38,7 @@ namespace TargetMarketing.YelpClient
         private const string TOKEN_SECRET = "KDUwZlx6GAAKo8PWnNMf1cx7iU0";
         private const string API_HOST = "https://api.yelp.com";
         private const string SEARCH_PATH = "/v2/search/";
-        private const int SEARCH_LIMIT = 40;
+        private const int SEARCH_LIMIT = 20;
 
         private JObject PerformRequest(string baseURL, Dictionary<string, string> queryParams = null)
         {
@@ -65,46 +80,14 @@ namespace TargetMarketing.YelpClient
             return PerformRequest(baseURL, queryParams);
         }
     }
-    class Options
+    public class Options
     {
         public string Term { get; set; }
         public string Location { get; set; }
     }
-    class SearchResult
+    public class SearchResult
     {
-
-    }
-    class Program
-    {
-        static void Main(string[] args)
-        {// ll=37.788022,-122.399797
-            //cll=37.77493,-122.419415
-            Program.QueryAPIAndPrintResult("bars", "ll=41.2033,-77.1945");
-            Console.Read();
-        }
-        public static void QueryAPIAndPrintResult(string term, string location)
-        {
-            var client = new YelpAPIClient();
-
-            Console.WriteLine("Querying for {0} in {1}...", term, location);
-
-            JObject response = client.Search(term, location);
-
-            JArray businesses = (JArray)response.GetValue("businesses");
-
-            if (businesses.Count == 0)
-            {
-                Console.WriteLine("No businesses for {0} in {1} found.", term, location);
-                return;
-            }
-
-            string business_id = (string)businesses[0]["id"];
-
-            Console.WriteLine(
-                "{0} businesses found, querying business info for the top result \"{1}\"...",
-                businesses.Count,
-                business_id
-            );
-        }
+        public double latitude { get; set; }
+        public double longitude { get; set; }
     }
 }
